@@ -1,3 +1,7 @@
 *.exe
 *.cbp
 *.o
+*.xml
+*.iml
+.name
+CMakeLists.txt
