@@ -15,15 +15,15 @@ void print(int *a,int n,char *s)
 }
 int main()
 {
-  int a[8] = {9,6,3,5,8,1,2,4};
-  mergeSort(a,8);
+  int a[10] = {9,6,3,5,8,1,2,4,7,0};
+  mergeSort(a,10);
   int i=0;
-  for(i=0;i<8;i++)
+  for(i=0;i<10;i++)
     printf("%d ", a[i]);
   return 0;
 }
 
-void merge(int *a, int *b,int *c,int n,int m) //merge function tested
+void merge(int *a, int *b,int *c,int m,int n) //merge function tested
 {
   //n = length of a, m = length of b
   int i=0,j=0,k=0;
@@ -47,7 +47,7 @@ void merge(int *a, int *b,int *c,int n,int m) //merge function tested
     i++;
     k++;
   }
-  while (j<m) //when a is exhausted
+  while (j<n) //when a is exhausted
   {
     *(c+k)=*(b+j);
     j++;
@@ -59,27 +59,21 @@ void mergeSort(int *a,int n)  // n is the length of a
 {
   if(n<2)
     return;
-  int mid = n/2;
-  int *left = malloc(4*mid);
-  int *right = malloc(4*(n-mid));
-  int i=0;
-  while(i<mid)
-  {
+  int l1 = n/2,l2;
+  if(n % 2 != 0)
+    l2 = l1 + 1;
+  else
+    l2 = l1;
+  int *left = malloc(4*l1);
+  int *right = malloc(4*l2);
+  int i = 0;
+  for(;i<l1;i++)
     *(left+i) = *(a+i);
-    i++;
-  }
-  while(i<n)
-  {
-    *(right+(i-mid)) = *(a+i);
-    i++;
-  }
-  print(left,mid,"before mergeSort()\n");
-  mergeSort(left,mid);
-  print(left,mid,"after mergeSort()\n");
-  print(right,mid,"before mergeSort()\n");
-  mergeSort(right,n-mid);
-  print(right,mid,"after mergeSort()\n");
-  print(a,n,"before merge()\n");
-  merge(left,right,a,mid,n-mid);
-  print(a,n,"after merge()\n");
+  for(;i<n;i++)
+    *(right+(i-l1)) = *(a+i);
+  mergeSort(left,l1);
+  mergeSort(right,l2);
+  merge(left,right,a,l1,l2);
+  free(left);
+  free(right);
 }//some error related to the odd even case is occuring
